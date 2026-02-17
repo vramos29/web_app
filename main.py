@@ -9,14 +9,18 @@ URL2 = "https://api.open-meteo.com/v1/forecast?current_weather=true"
 params = {"name": "Chicago", "country": "United States", "count": 1}
 response = requests.get(URL1, params=params, timeout = 7)
 response.raise_for_status()
-
+ 
 data = response.json() 
-print(data)         #works / prints out full json string
 
-longitude = data.get('longitude')
-latitude = data.get('latitude')
+results = data['results']
 
-print(f"{longitude}, {latitude}")   #returns None, None
+longitude = results[0]['longitude']
+latitude = results[0]['latitude']
+
+print(f"{latitude}, {longitude}")
+
+# structure -> list containing a dictionary 
+#1) get into results, #2 get into list to itrate through it
 
 
 
