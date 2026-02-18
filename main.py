@@ -16,6 +16,8 @@ latitude = results[0]['latitude']
 city = results[0]['name']
 country = results[0]['country_code']
 
+print(response)
+
 
 
 
