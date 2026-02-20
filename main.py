@@ -1,5 +1,7 @@
 #this is the main file
 
+from dataclasses import dataclass
+
 import requests
 
 #Initial URL retrieval of information for 2nd URL
@@ -69,22 +71,8 @@ windspeed = current_weather['windspeed']
 observation_time = current_weather['time']
 
 
-#Formats and prints response as a dictionary
-data = {
-    "City": city,
-    "Country": country,
-    "Latitude": f"{latitude}°",
-    "Longitude": f"{longitude}°",
-    "Temperature": f"{temp}°C",
-    "Elevation": f"{elevation}",
-    "Windspeed": f"{windspeed} km/h",
-    "Observation Time": observation_time
-}
-
-print(f" Weather Report Data: \n{data}")
-
-
 #Turns data into python object
+@dataclass
 class WeatherReport:
     city: str
     country: str
@@ -93,9 +81,9 @@ class WeatherReport:
     temp: float
     elevation: float
     windspeed: float
-    observation_time
+    observation_time: str
 
-report = WeatherReport()
+report = WeatherReport(city, country, latitude, longitude, temp, elevation, windspeed, observation_time)
 print(f"WeatherReport object: {report}")
 
         
