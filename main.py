@@ -9,6 +9,7 @@ response = requests.get(URL1, params=params, timeout = 7)
 response.raise_for_status()
 
 
+#Verifies geo_data to ensure every needed variable/value is in the API response
 def check_geo_data():
     geo_data = response.json() 
 
@@ -41,6 +42,7 @@ response2 = requests.get(URL2, params=params2, timeout = 7)
 response2.raise_for_status()
 
 
+#Verifies meteo_data to ensure every needed variable/value is in the second API response
 def check_meteo_data():
     global meteo_data
     meteo_data = response2.json()
@@ -67,6 +69,7 @@ windspeed = current_weather['windspeed']
 observation_time = current_weather['time']
 
 
+#Formats and prints response as a dictionary
 data = {
     "City": city,
     "Country": country,
@@ -82,7 +85,6 @@ print(f" Weather Report Data: \n{data}")
 
 
 #Turns data into python object
-
 class WeatherReport:
     city: str
     country: str
