@@ -84,7 +84,7 @@ class WeatherReport:
     observation_time: str
 
 report = WeatherReport(city, country, latitude, longitude, temp, elevation, windspeed, observation_time)
-print(f"WeatherReport object: {report}")
+print(report)
 
         
 
