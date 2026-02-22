@@ -82,6 +82,7 @@ class WeatherReport:
     elevation: float
     windspeed: float
     observation_time: str
+    
 
 report = WeatherReport(city, country, latitude, longitude, temp, elevation, windspeed, observation_time)
 print(report)
