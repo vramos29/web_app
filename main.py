@@ -1,8 +1,10 @@
 #this is the main file
 
-from dataclasses import dataclass
-
 import requests
+from dataclasses import dataclass
+from flask import Flask
+
+
 
 #Initial URL retrieval of information for 2nd URL
 URL1 = "https://geocoding-api.open-meteo.com/v1/search"
@@ -83,9 +85,19 @@ class WeatherReport:
     windspeed: float
     observation_time: str
     
-
 report = WeatherReport(city, country, latitude, longitude, temp, elevation, windspeed, observation_time)
-print(report)
+
+
+#Flask operations
+app = Flask(__name__)
+
+@app.route('/')
+def home():  
+    return str(report)
+
+# This ensures the server only runs if the script is executed directly - returns TypeError.
+if __name__ == '__main__':
+    app.run(debug=True)
 
         
 
