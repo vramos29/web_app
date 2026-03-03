@@ -2,7 +2,6 @@
 
 import requests
 from dataclasses import dataclass
-from flask import Flask
 
 
 
@@ -88,16 +87,6 @@ class WeatherReport:
 report = WeatherReport(city, country, latitude, longitude, temp, elevation, windspeed, observation_time)
 
 
-#Flask operations
-app = Flask(__name__)
-
-@app.route('/')
-def home():  
-    return str(report)
-
-# This ensures the server only runs if the script is executed directly - returns TypeError.
-if __name__ == '__main__':
-    app.run(debug=True)
 
         
 
