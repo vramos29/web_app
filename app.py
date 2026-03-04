@@ -14,3 +14,4 @@ def home():
 # This ensures the server only runs if the script is executed directly - returns TypeError.
 if __name__ == '__main__':
     app.run(debug=True)
+
