@@ -8,6 +8,7 @@ from dataclasses import dataclass
 #Initial URL retrieval of information for 2nd URL
 URL1 = "https://geocoding-api.open-meteo.com/v1/search"
 params = {"name": "Chicago", "country": "United States", "count": 1}
+
 response = requests.get(URL1, params=params, timeout = 7)
 response.raise_for_status()
 
@@ -86,7 +87,7 @@ class WeatherReport:
     
 report = WeatherReport(city, country, latitude, longitude, temp, elevation, windspeed, observation_time)
 
-
+print(report)
 
         
 
