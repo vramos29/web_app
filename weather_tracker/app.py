@@ -40,12 +40,6 @@ def update_report(id):
 def update_report(id):
     return f'<h1>This allows you to delete a certain weather report: {id} </h1>'
 
-"""
-#This will allow you to download a copy of the report(s)
-@app.route('/download-report')
-def download_report():
-    return '<h1>This will allow you to download a copy of the report</h1>'
-"""
 
 # This ensures the server only runs if the script is executed directly - returns TypeError.
 if __name__ == '__main__':
