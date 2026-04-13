@@ -1,19 +1,1 @@
-body {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: tan;
-}
-.page_title {
-    background-color: lightblue;
-    color: white;
-    padding: 1rem;
-    border-radius: 5px;
-}
 
-.content {
-    background: white;
-    padding: 2rem;
-    border-radius: 5px;
-}

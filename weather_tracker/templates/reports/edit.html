@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Weather Report{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Report {{ (report id) }}</h1>
+
+    <!-- Edit Form -->
+    <form method="POST">
+        <div>
+            <label for="temp">Temperature *</label>
+            <input type="text" name="title" 
+                   value="{{}}" 
+                   required maxlength="100"
+                   placeholder="Enter new temperature">
+            {% if errors and 'temp' in errors %}
+                <div>{{ errors.temp }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="windspeed">Windspeed *</label>
+            <input type="text" name="title" 
+                   value="{{}}" 
+                   required maxlength="100"
+                   placeholder="Enter new windspeed">
+            {% if errors and 'windspeed' in errors %}
+                <div>{{ errors.windspeed }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="observation_time">Observation Time *</label>
+            <input type="text" name="title" 
+                   value="{{}}" 
+                   required maxlength="100"
+                   placeholder="Enter new time observed">
+            {% if errors and 'observation_time' in errors %}
+                <div>{{ errors.observation_time }}</div>
+            {% endif %}
+        </div>
+        
+        
+        
+        <div>
+            <button type="submit" class="btn btn-primary">
+                💾 Update Weather Report
+            </button>
+            <a href="{{ url_for('show_report', report_id=report.id) }}" class="btn btn-secondary">
+                ← Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
