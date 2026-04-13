@@ -1,8 +1,23 @@
 <!DOCTYPE html>
-<html>
-<header>
-    <h1>This is the base page</h1>
-</header>
+<html lang="en">
+    <header>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>Weather Tracker</title>
+    </header>
+
+    <body>
+        <div class="page_title">
+            <h1>Weather Tracker</h1>
+        </div>
+        
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
+
+
+    </body>
 
 
 </html>
