@@ -1,10 +1,7 @@
 from flask import Flask, abort, render_template, redirect, request, url_for
 
-import weather_tracker.main as main
-from weather_tracker.patterns import DbManager, Model, Report
 
 
-from_main = main
 
 #Flask operations
 app = Flask(__name__)
