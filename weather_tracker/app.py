@@ -1,4 +1,13 @@
+import psycopg
+import os
 from flask import Flask, abort, render_template, redirect, request, url_for
+from dotenv import load_dotenv
+from datetime import datetime
+
+load_dotenv()  # Loads variables from .env file
+
+username = os.getenv('db_user')
+password = os.getenv('db_pass')
 
 
 
