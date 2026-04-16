@@ -6,12 +6,11 @@ from datetime import datetime
 
 
 
-
 class DatabaseManager:
     """manages ORM operations"""
 
     def __init__(self, dbname, user, password, host="localhost", port=5432):
-        self.connection_string=f"dbname={dbname}, user={user}, password={password}, host={host}, port={port}"
+        self.connection_string=f"dbname={dbname} user={user} password={password} host={host} port={port}"
     
     def get_connection(self):
         """Get database connection"""
