@@ -15,6 +15,7 @@ class DatabaseManager:
     
     def get_connection(self):
         """Get database connection"""
+        print(psycopg.connect(self.connection_string))
         return psycopg.connect(self.connection_string)
 
 class BaseModel:
@@ -23,7 +24,8 @@ class BaseModel:
     TABLE_NAME = ""
 
     def __init__(self, db_manager):
-        self.db = db_manager #for inheritence, possibly change this to 'from DatabaseManager' or something like that
+        self.db = db_manager #for inheritence
+        
     
     def save(self):
         """Saves current instance to DB"""
@@ -58,7 +60,7 @@ class Report(BaseModel):
 
     TABLE_NAME = "weatherreport"
 
-    def __init__(self, db_manager, city, country, report_id, latitude, longitude, temp, elevation, windspeed, observation_time, created_at):
+    def __init__(self, db_manager, report_id, city, country, latitude, longitude, temp, elevation, windspeed, observation_time, created_at):
         super().__init__(db_manager)
         self.id = report_id
         self.city = city
@@ -76,11 +78,11 @@ class Report(BaseModel):
         with self.db.get_connection() as conn:
             with conn.cursor() as cur:
                 query = f"""
-                    INSERT INTO {self.TABLE_NAME} (city, country, report_id, latitude, longitude, temp, elevation, windspeed, observation_time, created_at)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO {self.TABLE_NAME} (city, country, latitude, longitude, temp, elevation, windspeed, observation_time, created_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING city, country, windspeed, temp, observation_time
                 """
-                cur.execute(query, (self.id, self.city, self.country, self.latitude, self.longitude, self.temp, self.elevation, self.windspeed, self.observation, self.created))
+                cur.execute(query, (self.city, self.country, self.latitude, self.longitude, self.temp, self.elevation, self.windspeed, self.observation, self.created))
                 result = cur.fetchone()
                 self.id = result[0]
                 self.created = result[1]
@@ -90,7 +92,7 @@ class Report(BaseModel):
     def _update(self):
         """Updates an existing report in the database"""
         with self.db.get_connection() as conn:
-            with conn.cursor as cur:
+            with conn.cursor() as cur:
                 query = f"""
                     UPDATE {self.TABLE_NAME}
                     SET windspeed = %s, temp %s
@@ -166,9 +168,13 @@ dbname = os.getenv('dbname')
 db = DatabaseManager(dbname, username, password)
 
 #Create a new record
+
 """
-new_record = Report(db, 11, 'Johnson City', 'US', 30.27687, -98.41197, 23.3, 367.0, 24.8, '2026-04-16T16:15', '2026-04-16 11:31:45.41727')
+new_record = Report(db, None, 'Johnson City', 'US', 30.27687, -98.41197, 23.3, 367.0, 24.8, '2026-04-16T16:15', '2026-04-16 11:31:45.41727')
 new_record.save()
 print(f"Create report: {new_record}")
 """
+# above code works, database conneciton is successful
+
+
 
