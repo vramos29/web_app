@@ -11,6 +11,7 @@ class DatabaseManager:
 
     def __init__(self, dbname, user, password, host="localhost", port=5432):
         self.connection_string=f"dbname={dbname} user={user} password={password} host={host} port={port}"
+        print(self.connection_string)
     
     def get_connection(self):
         """Get database connection"""
@@ -165,7 +166,9 @@ dbname = os.getenv('dbname')
 db = DatabaseManager(dbname, username, password)
 
 #Create a new record
-
+"""
 new_record = Report(db, 11, 'Johnson City', 'US', 30.27687, -98.41197, 23.3, 367.0, 24.8, '2026-04-16T16:15', '2026-04-16 11:31:45.41727')
 new_record.save()
 print(f"Create report: {new_record}")
+"""
+

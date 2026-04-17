@@ -1,5 +1,6 @@
 import psycopg
 import os
+from patterns import Report as wo
 from flask import Flask, abort, render_template, redirect, request, url_for
 from dotenv import load_dotenv
 from datetime import datetime

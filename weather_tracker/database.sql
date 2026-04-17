@@ -28,3 +28,6 @@ INSERT into weatherreport(city, country, latitude, longitude, temp, elevation, w
 ('Atlanta', 'US', 33.749, -84.38798, 17.8, 327.0, 23.4, '2026-03-28T02:45'),
 ('Detroit', 'US', 42.33143, -83.04575, -0.8, 182.0, 5.1, '2026-03-28T02:45'),
 ('Memphis', 'US', 35.14953, -90.04898, 8.7, 84.0, 17.4, '2026-03-28T02:45');
+
+
+ALTER DATABASE "Web App DB" RENAME TO Web_App_DB;
