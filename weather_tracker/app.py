@@ -1,17 +1,7 @@
-import psycopg
-import os
-from patterns import Report as wo
+from patterns import Report as report
+from main import WeatherReport as data
 from flask import Flask, abort, render_template, redirect, request, url_for
-from dotenv import load_dotenv
 from datetime import datetime
-
-load_dotenv()  # Loads variables from .env file
-
-username = os.getenv('db_user')
-password = os.getenv('db_pass')
-
-
-
 
 #Flask operations
 app = Flask(__name__)
@@ -25,27 +15,32 @@ def home():
 #Fetches live weather, saves it, returns record
 @app.route('/ingest?city=city&country=country', methods = ['POST'])
 def enter_request():
-    return '<h1>This is where you can generate a weather report</h1>'
+    result = report._insert(data)
+    return render_template()
 
 #Retrieves all stored observations
 @app.route('/observations', methods = ['GET'])
 def retrieve_report():
-    return '<h1>This is where you can read ALL the weather report(s)</h1>'
+    result = report.all(data)
+    return render_template()
 
 #Retrieves a specific obervation by ID
 @app.route('/observations/<int:id>', methods = ['GET'])
 def update_report(id):
-    return f'<h1>This allows you to view a certain weather report: {id} </h1>'
+    result = report.find(data)
+    return render_template()
 
 #Updates a previously made observation
 @app.route('/observations/<int:id>', methods = ['PUT'])
 def update_report(id):
-    return f'<h1>This allows you to update a certain weather report: {id} </h1>'
+    result = report._update(data)
+    return render_template()
 
 #Deletes an observation from the Database
 @app.route('/observations/<int:id>', methods = ['DELETE'])
 def update_report(id):
-    return f'<h1>This allows you to delete a certain weather report: {id} </h1>'
+    result = report.delete(data)
+    return render_template()
 
 
 # This ensures the server only runs if the script is executed directly - returns TypeError.
