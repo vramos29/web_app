@@ -1,19 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>Weather Report</h2>
-    {% for report in reports %}
-    <dl>
-        <dt>{{}}</dt>
-            <dd>Report ID: {{}}</dd>
-            <dd>City: {{}}</dd>
-            <dd>Country: {{}}</dd>
-            <dd>Temperature: {{}} °C</dd>
-            <dd>Wind Speed: {{}} m/h</dd>
-            <dd>Latitude: {{}}</dd>
-            <dd>Longitude: {{}}</dd>
-            <dd>Elevation: {{}}</dd>
-            <dd>Observation Time: {{}}</dd>
-    </dl>
-    {% endfor %}
-</div>
+<!--This will be where you can generate an observation by entering the city/country-->
+
+{% endblock %}
