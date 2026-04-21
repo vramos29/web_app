@@ -1,6 +1,6 @@
 from patterns import Report as report
 from main import WeatherReport as data
-from flask import Flask, abort, render_template, redirect, request, url_for
+from flask import Flask, render_template
 from datetime import datetime
 
 #Flask operations
@@ -10,8 +10,9 @@ app = Flask(__name__)
 #main route once server starts
 @app.route('/')
 def home():  
-    return '<h1>This is the weather report app starter page</h1>'
+    return render_template('dashboard.html')
 
+"""
 #Fetches live weather, saves it, returns record
 @app.route('/ingest?city=city&country=country', methods = ['POST'])
 def enter_request():
@@ -43,6 +44,8 @@ def update_report(id):
     return render_template()
 
 
+
+"""
 # This ensures the server only runs if the script is executed directly - returns TypeError.
 if __name__ == '__main__':
     app.run(debug=True)

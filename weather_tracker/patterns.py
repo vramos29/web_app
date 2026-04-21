@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 from datetime import datetime
 
 
-
-
 class DatabaseManager:
     """manages ORM operations"""
 

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!--This will be where you can generate an observation by entering the city/country-->
+<h2>{{ title }}</h2>
+<div class="card">
+    <main class="card-body">
+        <p>Below, enter the name of the city and country you would like to generate a weather report from.</p>
+        <input type="text" id="search-input" class="form-control" placeholder="Enter city">
+        <input type="text" id="search-input" class="form-control" placeholder="Enter country">
+        
+    </main>
+</div>
+
+
+{% endblock %}
