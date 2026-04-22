@@ -2,12 +2,13 @@
 
 import requests
 from dataclasses import dataclass
+import app
 
 
 
 #Initial URL retrieval of information for 2nd URL
 URL1 = "https://geocoding-api.open-meteo.com/v1/search"
-params = {"name": "Johnson City", "country": "United States", "count": 1}
+params = {"name": app.user_input1, "country": app.user_input2, "count": 1}
 
 response = requests.get(URL1, params=params, timeout = 7)
 response.raise_for_status()

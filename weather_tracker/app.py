@@ -1,5 +1,4 @@
 from patterns import Report as report
-from main import WeatherReport as data
 from flask import Flask, request, render_template
 from datetime import datetime
 import requests
