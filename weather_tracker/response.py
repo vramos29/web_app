@@ -2,7 +2,6 @@
 
 import requests
 from dataclasses import dataclass
-import main
 
 
 @dataclass
