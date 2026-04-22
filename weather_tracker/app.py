@@ -10,6 +10,7 @@ app = Flask(__name__)
 #main route once server starts, takes user input
 @app.route('/', methods=['GET', 'POST'])
 def home():
+
     user_input1 = None
     user_input2 = None
 
@@ -20,8 +21,8 @@ def home():
 
         if not user_input1 or not user_input2:
             return render_template('dashboard.html', error="Please enter the correct values")
-
-
+        
+    print(user_input1, user_input2) #returns None for both
     return render_template('dashboard.html', user_input1=user_input1, user_input2=user_input2)
 
 """
