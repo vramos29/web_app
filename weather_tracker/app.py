@@ -1,16 +1,29 @@
 from patterns import Report as report
 from main import WeatherReport as data
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 from datetime import datetime
+import requests
 
 #Flask operations
 app = Flask(__name__)
 
 
 #main route once server starts
-@app.route('/')
-def home():  
-    return render_template('dashboard.html')
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    user_input1 = None
+    user_input2 = None
+
+    if request.method == "POST":
+        
+        user_input1 = request.form.get("city", "").strip().capitalize()
+        user_input2 = request.form.get("country", "").strip().capitalize()
+
+        if not user_input1 or not user_input2:
+            return render_template('dashboard.html', error="Please enter the correct values")
+
+
+    return render_template('dashboard.html', user_input1=user_input1, user_input2=user_input2)
 
 """
 #Fetches live weather, saves it, returns record
