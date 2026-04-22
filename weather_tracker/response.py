@@ -5,7 +5,6 @@ from dataclasses import dataclass
 import main
 
 
-
 @dataclass
 class WeatherReport:
         city: str
@@ -16,17 +15,6 @@ class WeatherReport:
         elevation: float
         windspeed: float
         observation_time: str
-
-#empty variables
-_city = None
-_country = None
-longitude = None
-latitude = None
-temp = None
-windspeed = None
-elevation = None
-observation_time = None
-report = None
 
 
 #Initial URL retrieval of information for 2nd URL
@@ -49,27 +37,19 @@ def geo_request(city, country):
     for responses in required_response:
         if responses not in result:
             return {"error": f"Missing required field: {responses}"}
-    
-    global longitude, latitude, _city, _country
-
-    longitude = result['longitude'] 
-    latitude = result['latitude']
-    _city = result['name']
-    _country = result['country_code']
 
     return {
-        "latitude": latitude,
-        "longitude": longitude,
-        "city": _city,
-        "country": _country
+        "latitude": result['latitude'],
+        "longitude": result['longitude'],
+        "city": result['name'],
+        "country": result['country']
     }
 
 
 
 #Takes longitude and latitude parameters and passes them through 2nd URL
-def meteo_request():
+def meteo_request(latitude, longitude):
 
-    global latitude, longitude
 
     URL2 = "https://api.open-meteo.com/v1/forecast?current_weather=true"
     params2 = {"latitude": latitude, "longitude": longitude, "current_weather": True}
@@ -91,39 +71,27 @@ def meteo_request():
     for responses in required_weather_response:
         if responses not in current_weather:
             return {"error": f"Missing required field: {responses}"}
-    
-    global temp, elevation, windspeed, observation_time
 
-
-    temp = current_weather['temperature']
-    elevation = meteo_data['elevation']
-    windspeed = current_weather['windspeed']
-    observation_time = current_weather['time']
 
     return {
-        "temp": temp,
-        "elevation": elevation,
-        "windspeed": windspeed,
-        "observation_time": observation_time
+        "temp": current_weather['temperature'],
+        "elevation": meteo_data['elevation'],
+        "windspeed": current_weather['windspeed'],
+        "observation_time": current_weather['time']
     }
 
 
 #Turns data into python object
 
 
-def report_form():
-    
-
-    global report
-        
-    report = WeatherReport(_city, _country, latitude, longitude, temp, elevation, windspeed, observation_time)
-
-    print(report)
-
-        
-
-
-
-        
-
-
+def report_form(geo, meteo):
+    return WeatherReport(
+        city=geo["city"],
+        country=geo["country"],
+        latitude=geo["latitude"],
+        longitude=geo["longitude"],
+        temp=meteo["temp"],
+        elevation=meteo["elevation"],
+        windspeed=meteo["windspeed"],
+        observation_time=meteo["observation_time"]
+    )

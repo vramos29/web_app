@@ -1,6 +1,6 @@
 import requests
 import response as r
-from patterns import Report as report
+import patterns as rp
 from flask import Flask, request, render_template
 from datetime import datetime
 
@@ -25,13 +25,15 @@ def home():
         if "error" in geo_data:
             return render_template("dashboard.html", geo=geo_data)
         
-        meteo_data = r.meteo_request()
+        meteo_data = r.meteo_request(geo_data["latitude"], geo_data["longitude"])
         if "error" in meteo_data:
             return render_template("dashboard.html", meteo=meteo_data)
         
-        report_organizer = r.report_form()
-        if "error" in report_organizer:
-            return render_template("dashboard.html", form=report_organizer)
+        report = r.report_form(geo_data, meteo_data)
+        print(report)
+        
+        return render_template('dashboard.html', report=report)
+
 
     return render_template('dashboard.html')
 
