@@ -1,99 +1,77 @@
-#this is the main file
-
 import requests
-from dataclasses import dataclass
-import app
+import response as r
+from patterns import Report as report
+from flask import Flask, request, render_template
+from datetime import datetime
 
 
-
-#Initial URL retrieval of information for 2nd URL
-URL1 = "https://geocoding-api.open-meteo.com/v1/search"
-params = {"name": app.user_input1, "country": app.user_input2, "count": 1}
-
-response = requests.get(URL1, params=params, timeout = 7)
-response.raise_for_status()
+#Flask operations
+app = Flask(__name__)
 
 
-#Verifies geo_data to ensure every needed variable/value is in the API response
-def check_geo_data():
-    geo_data = response.json() 
+#main route once server starts, takes user input
+@app.route('/', methods=['GET', 'POST'])
+def home():
 
-    if 'results' not in geo_data:
-        print("No 'results' found.")
-    global results
-    results = geo_data['results']
-
-    if 'longitude' not in results or not isinstance(results['longitude'], int):
-        return("'Longitude' not found or has incorrect value")
-    if 'latitude' not in results or not isinstance(results['latitude'], int):
-        return("'Latitude' not found or has incorrect value")
-    if 'city' not in results or not isinstance(results['name'], str):
-        return("'City' not found or has incorrect value")
-    if 'country_code' not in results or not isinstance(results['country_code'], str):
-        return("'Country' not found or has incorrect value")
-
-check_geo_data()
-longitude = results[0]['longitude'] 
-latitude = results[0]['latitude']
-city = results[0]['name']
-country = results[0]['country_code']
-
-
-
-#Takes longitude and latitude parameters and passes them through 2nd URL
-URL2 = "https://api.open-meteo.com/v1/forecast?current_weather=true"
-params2 = {"latitude": latitude, "longitude": longitude}
-response2 = requests.get(URL2, params=params2, timeout = 7)
-response2.raise_for_status()
-
-
-#Verifies meteo_data to ensure every needed variable/value is in the second API response
-def check_meteo_data():
-    global meteo_data
-    meteo_data = response2.json()
-
-    if 'current_weather' not in meteo_data:
-        print("No 'results' found.")
-    global current_weather
-    current_weather = meteo_data['current_weather']
-
-    if 'temp' not in current_weather or not isinstance(current_weather['temperature'], int):
-        return("'Temperature' not found or has incorrect value")
-    if 'elevation' not in meteo_data or not isinstance(meteo_data['relevation'], int):
-        return("'Elevation' not found or has incorrect value")
-    if 'windspeed' not in current_weather or not isinstance(current_weather['windspeed'], int):
-        return("'City' not found or has incorrect value")
-    if 'observation_time' not in current_weather:
-        return("'Observation time' not located")
-
-check_meteo_data()
-current_weather = meteo_data['current_weather']
-temp = current_weather['temperature']
-elevation = meteo_data['elevation']
-windspeed = current_weather['windspeed']
-observation_time = current_weather['time']
-
-
-#Turns data into python object
-@dataclass
-class WeatherReport:
-    city: str
-    country: str
-    latitude: float
-    longitude: float
-    temp: float
-    elevation: float
-    windspeed: float
-    observation_time: str
-    
-report = WeatherReport(city, country, latitude, longitude, temp, elevation, windspeed, observation_time)
-
-print(report)
-
+    print(request.method)
+    if request.method == "POST":
         
-
-
-
+        city = request.form.get("city").strip().capitalize()
+        country = request.form.get("country").strip().title()
+        if not city or not country:
+            return render_template('dashboard.html', error="Please enter the correct values")
         
+        geo_data = r.geo_request(city, country)
+        if "error" in geo_data:
+            return render_template("dashboard.html", geo=geo_data)
+        
+        meteo_data = r.meteo_request()
+        if "error" in meteo_data:
+            return render_template("dashboard.html", meteo=meteo_data)
+        
+        report_organizer = r.report_form()
+        if "error" in report_organizer:
+            return render_template("dashboard.html", form=report_organizer)
 
+    return render_template('dashboard.html')
+
+#put main start into a function, call it from / route, then pass variables in it to be run
+
+"""
+#Fetches live weather, saves it, returns record
+@app.route('/ingest?city=city&country=country', methods = ['POST'])
+def enter_request():
+    result = report._insert(data)
+    return render_template()
+
+#Retrieves all stored observations
+@app.route('/observations', methods = ['GET'])
+def retrieve_report():
+    result = report.all(data)
+    return render_template()
+
+#Retrieves a specific obervation by ID
+@app.route('/observations/<int:id>', methods = ['GET'])
+def update_report(id):
+    result = report.find(data)
+    return render_template()
+
+#Updates a previously made observation
+@app.route('/observations/<int:id>', methods = ['PUT'])
+def update_report(id):
+    result = report._update(data)
+    return render_template()
+
+#Deletes an observation from the Database
+@app.route('/observations/<int:id>', methods = ['DELETE'])
+def update_report(id):
+    result = report.delete(data)
+    return render_template()
+
+
+
+"""
+# This ensures the server only runs if the script is executed directly - returns TypeError.
+if __name__ == '__main__':
+    app.run(debug=True)
 
