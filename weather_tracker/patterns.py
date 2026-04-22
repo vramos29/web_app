@@ -9,11 +9,9 @@ class DatabaseManager:
 
     def __init__(self, dbname, user, password, host="localhost", port=5432):
         self.connection_string=f"dbname={dbname} user={user} password={password} host={host} port={port}"
-        print(self.connection_string)
     
     def get_connection(self):
         """Get database connection"""
-        print(psycopg.connect(self.connection_string))
         return psycopg.connect(self.connection_string)
 
 class BaseModel:

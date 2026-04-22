@@ -7,7 +7,7 @@ import requests
 app = Flask(__name__)
 
 
-#main route once server starts
+#main route once server starts, takes user input
 @app.route('/', methods=['GET', 'POST'])
 def home():
     user_input1 = None
