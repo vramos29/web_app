@@ -11,19 +11,19 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def home():
 
-    user_input1 = None
-    user_input2 = None
-
+    # user_input1 = None
+    # user_input2 = None
+    print(request.method)
     if request.method == "POST":
         
-        user_input1 = request.form.get("city", "").strip().capitalize()
-        user_input2 = request.form.get("country", "").strip().capitalize()
+        user_input1 = request.form.get("city").strip().capitalize()
+        user_input2 = request.form.get("country").strip().capitalize()
 
         if not user_input1 or not user_input2:
             return render_template('dashboard.html', error="Please enter the correct values")
-        
-    print(user_input1, user_input2) #returns None for both
-    return render_template('dashboard.html', user_input1=user_input1, user_input2=user_input2)
+    return render_template('dashboard.html',)
+
+#put main start into a function, call it from / route, then pass variables in it to be run
 
 """
 #Fetches live weather, saves it, returns record
