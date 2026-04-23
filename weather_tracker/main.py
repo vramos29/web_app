@@ -31,26 +31,27 @@ def home():
             return render_template("dashboard.html", meteo=meteo_data)
         
         report = r.report_form(geo_data, meteo_data)
-        print(report)
         # ^ properly retireves full weather report object
 
-    
-        """
-        new_record = d.Report(report) #reads this as empty, pick up work here
+        new_record = d.Report(
+            db_manager=d.db,
+            report_id=None,
+            city=report.city,
+            country=report.country,
+            latitude=report.latitude,
+            longitude=report.longitude,
+            temp=report.temp,
+            elevation=report.elevation,
+            windspeed=report.windspeed,
+            observation_time=report.observation_time,
+            created_at=None
+        )
+
         new_record.save()
-        """
-        
-        
-
-        
-        return render_template('dashboard.html', report=report)
-    
-
+        return render_template('dashboard.html', report=report, new_record=new_record)
 
 
     return render_template('dashboard.html')
-
-
 
 
 #Fetches live weather, saves it, returns record

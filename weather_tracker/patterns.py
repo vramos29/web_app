@@ -56,7 +56,7 @@ class Report(BaseModel):
 
     TABLE_NAME = "weatherreport"
 
-    def __init__(self, db_manager, report_id, city, country, latitude, longitude, temp, elevation, windspeed, observation_time, created_at):
+    def __init__(self, db_manager, report_id=None, city=None, country=None, latitude=None, longitude=None, temp=None, elevation=None, windspeed=None, observation_time=None, created_at=None):
         super().__init__(db_manager)
         self.id = report_id
         self.city = city
@@ -66,7 +66,7 @@ class Report(BaseModel):
         self.temp = temp
         self.elevation = elevation
         self.windspeed = windspeed
-        self.observation = observation_time
+        self.observation_time = observation_time
         self.created = created_at or datetime.now()
 
     def _insert(self):
@@ -76,9 +76,9 @@ class Report(BaseModel):
                 query = f"""
                     INSERT INTO {self.TABLE_NAME} (city, country, latitude, longitude, temp, elevation, windspeed, observation_time, created_at)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    RETURNING city, country, windspeed, temp, observation_time
+                    RETURNING report_id, created_at
                 """
-                cur.execute(query, (self.city, self.country, self.latitude, self.longitude, self.temp, self.elevation, self.windspeed, self.observation, self.created))
+                cur.execute(query, (self.city, self.country, self.latitude, self.longitude, self.temp, self.elevation, self.windspeed, self.observation_time, self.created))
                 result = cur.fetchone()
                 self.id = result[0]
                 self.created = result[1]
@@ -91,7 +91,7 @@ class Report(BaseModel):
             with conn.cursor() as cur:
                 query = f"""
                     UPDATE {self.TABLE_NAME}
-                    SET windspeed = %s, temp %s
+                    SET windspeed = %s, temp = %s
                     WHERE report_id = %s
                 """
                 cur.execute(query, (self.windspeed, self.temp, self.id))
@@ -116,18 +116,24 @@ class Report(BaseModel):
         """Finds a report by ID"""
         with db_manager.get_connection() as conn:
             with conn.cursor() as cur:
-                query = f"SELECT report_id, city, country, windspeed, temp, observation_time FROM {cls.TABLE_NAME} WHERE report_id = %s"
+                query = f"""SELECT report_id, city, country, latitude, longitude, temp, elevation, windspeed, observation_time, created_at 
+                FROM {cls.TABLE_NAME} 
+                WHERE report_id = %s
+                """
                 cur.execute(query, (report_id,))
                 result = cur.fetchone()
 
                 if result:
                     return Report(db_manager,
+                                  report_id=result[0],
                                   city=result[1],
                                   country=result[2],
-                                  report_id=result[0],
-                                  temp=result[3],
-                                  windspeed=result[4],
-                                  observation_time=result[5])
+                                  latitude=result[3],
+                                  longitude=result[4],
+                                  temp=result[5],
+                                  elevation=result[7],
+                                  observation_time=result[8],
+                                  created_at=result[9])
                 return None
             
     
@@ -136,19 +142,24 @@ class Report(BaseModel):
         """Get every report from the database"""
         with db_manager.get_connection() as conn:
             with conn.cursor() as cur:
-                query = f"SELECT report_id, city, country, windspeed, temp, observation_time FROM {cls.TABLE_NAME} ORDER BY report_id"
+                query = f"""SELECT report_id, city, country, latitude, longitude, temp, elevation, windspeed, observation_time, created_at 
+                FROM {cls.TABLE_NAME} 
+                ORDER BY report_id"""
                 cur.execute(query)
                 results = cur.fetchall()
 
                 reports = []
                 for row in results:
                     reports.append(Report(db_manager,
-                                          city=row[1],
-                                          country=row[2],
-                                          report_id=row[0],
-                                          windspeed=row[3],
-                                          temp=row[4],
-                                          observation_time=row[5]))
+                                  report_id=row[0],
+                                  city=row[1],
+                                  country=row[2],
+                                  latitude=row[3],
+                                  longitude=row[4],
+                                  temp=row[5],
+                                  elevation=row[7],
+                                  observation_time=row[8],
+                                  created_at=row[9]))
                 return reports
             
     def __repr__(self):
