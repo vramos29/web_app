@@ -94,3 +94,4 @@ def report_form(geo, meteo):
         windspeed=meteo["windspeed"],
         observation_time=meteo["observation_time"]
     )
+

@@ -1,12 +1,13 @@
 import requests
 import response as r
-import patterns as rp
+import patterns as d
 from flask import Flask, request, render_template
 from datetime import datetime
 
 
 #Flask operations
 app = Flask(__name__)
+
 
 
 #main route once server starts, takes user input
@@ -30,11 +31,19 @@ def home():
             return render_template("dashboard.html", meteo=meteo_data)
         
         report = r.report_form(geo_data, meteo_data)
+        print(report)
+        # ^ properly retireves full weather report object
 
-        record = rp.Report(report) #reads this as empty, pick up work here
+    
+        """
+        new_record = d.Report(report) #reads this as empty, pick up work here
+        new_record.save()
+        """
+        
+        
 
         
-        return render_template('dashboard.html', record=record)
+        return render_template('dashboard.html', report=report)
     
 
 
