@@ -48,7 +48,7 @@ def home():
         )
 
         new_record.save()
-        return render_template('dashboard.html', report=report, new_record=new_record)
+        return render_template('observations.html', report=report, new_record=new_record)
 
 
     return render_template('dashboard.html')
@@ -56,7 +56,9 @@ def home():
 
 #Fetches live weather, saves it, returns record
 @app.route('/observations', methods = ['GET', 'POST'])
-def show_report():
+def show_reports():
+    reports = d.Report.all()
+    print(reports)
     return render_template('observations.html')
 
 

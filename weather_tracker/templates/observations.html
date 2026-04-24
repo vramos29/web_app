@@ -3,13 +3,16 @@
 {% block title %}Weather Reports{% endblock %}
 
 {% block content %}
-<div>
-
-    <ul>
-    {% for r in record %}
-        <li>{{ r }}</li>
-    {% endfor %}
-    </ul>
-
+<div class="card">
+    <main class="card-body">
+        {% for item in reports %}
+        <dl>
+            <dt>{{reports.city}}</dt>
+                <dd>Country: {{reports.country}}</dd>
+                <dd>Temperature: {{reports.temp}}°C</dd>
+                <dd>Wind Speed: {{reports.windspeed}} m/h</dd>   
+        </dl>
+        {% endfor %}
+    </main>
 </div>
 {% endblock %}
