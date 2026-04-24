@@ -30,10 +30,9 @@
             <label>Observation Iime</label>
             <input type="text" name="observation_time" value="{{ report.observation_time }}" class="form-control">
 
-            <label>Created At</label>
-            <input type="text" name="created_at" value="{{ report.created_at }}" class="form-control">
-
             <button type="submit" class="btn btn-primary mt-3"> Update Report </button>
+            
+            <a href=" {{ url_for('delete_report', id=report.id) }}" class="btn btn-danger btn-sm mt-3"> Delete Report </a>
         </form>
 
     </main>

@@ -91,10 +91,10 @@ class Report(BaseModel):
             with conn.cursor() as cur:
                 query = f"""
                     UPDATE {self.TABLE_NAME}
-                    SET city = %s, country = %s, latitude = %s, longitude = %s, temp = %s, elevation = %s, windspeed = %s, observation_time = %s, created_at = %s
+                    SET city = %s, country = %s, latitude = %s, longitude = %s, temp = %s, elevation = %s, windspeed = %s, observation_time = %s
                     WHERE report_id = %s
                 """
-                cur.execute(query, (self.city, self.country, self.latitude, self.longitude, self.temp, self.elevation, self.windspeed, self.observation_time, self.created_at, self.id))
+                cur.execute(query, (self.city, self.country, self.latitude, self.longitude, self.temp, self.elevation, self.windspeed, self.observation_time, self.id))
                 conn.commit()
                 return self
             
@@ -157,6 +157,7 @@ class Report(BaseModel):
                                   latitude=row[3],
                                   longitude=row[4],
                                   temp=row[5],
+                                  windspeed=row[6],
                                   elevation=row[7],
                                   observation_time=row[8],
                                   created_at=row[9]))

@@ -58,7 +58,6 @@ def home():
 @app.route('/observations', methods = ['GET'])
 def show_reports():
     reports = d.Report.all(d.db)
-    print(reports)
     return render_template('observations.html', reports=reports)
 
 
@@ -68,30 +67,38 @@ def edit_report(id):
     report = d.Report.find(d.db, id)
     return render_template('edit_observations.html', report=report)
 
+
+#Reroutes to a edit page, where all values listed below can be edited
 @app.route('/edit_observations/<int:id>', methods=["POST"])
 def update_report(id):
     report = d.Report.find(d.db, id)
     report.city = request.form['city']
     report.country = request.form['country']
-    report.latitude = request.form['latitude']
-    report.longitude = request.form['longitude']
-    report.temp = request.form['temp']
-    report.elevation = request.form['elevation']
-    report.windspeed = request.form['windspeed']
-    report.observation_time = request.form['observation_time']
-    report.created_at = request.form ['created_at']
+    report.latitude = float_values(request.form['latitude'])
+    report.longitude = float_values(request.form['longitude'])
+    report.temp = float_values(request.form['temp'])
+    report.elevation = float_values(request.form['elevation'])
+    report.windspeed = float_values(request.form['windspeed'])
+    report.observation_time = (request.form['observation_time'])
 
     report._update()
 
     return redirect(url_for('show_reports'))
 
-"""
-#Deletes an observation from the Database
-@app.route('/observations/<int:id>', methods = ['DELETE'])
-def update_report():
-    return render_template()
-"""
 
+#Deletes an observation from the Database
+@app.route('/edit_observations/<int:id>/delete', methods = ['GET'])
+def delete_report(id):
+    report = d.Report.find(d.db, id)
+    report.delete()
+    return redirect(url_for('show_reports'))
+
+
+#allows float values to be properly transferred back into sql database without "None" str
+def float_values(values):
+    if values in ("", "None", None):
+        return None
+    return float(values)
 
 
 # This ensures the server only runs if the script is executed directly - returns TypeError.
