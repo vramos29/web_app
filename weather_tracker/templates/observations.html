@@ -5,13 +5,28 @@
 {% block content %}
 <div class="card">
     <main class="card-body">
+
+        <a href=" {{ url_for('home') }}" class="btn btn-secondary btn-sm"> Return Home </a>
+        <p></p>
+
         {% for item in reports %}
         <dl>
-            <dt>{{reports.city}}</dt>
-                <dd>Country: {{reports.country}}</dd>
-                <dd>Temperature: {{reports.temp}}°C</dd>
-                <dd>Wind Speed: {{reports.windspeed}} m/h</dd>   
-        </dl>
+            <dt>{{item.city}}</dt>
+                <dd>Country: {{item.country}}</dd>
+                <dd>Latitude: {{item.latitude}}</dd>
+                <dd>Longitude: {{item.longitude}}</dd>
+                <dd>Temperature: {{item.temp}}°C</dd>
+                <dd>Elevation: {{item.elevation}} ft</dd>
+                <dd>Wind Speed: {{item.windspeed}} m/h</dd>   
+                <dd>Observation Time: {{item.observation_time}}</dd>
+                <dd>Created At: {{item.created_at}}</dd>
+        </dl> 
+
+        <div class="mt-2">
+            <a href=" {{ url_for('edit_report', id=item.id) }}" class="btn btn-warning btn-sm"> Edit </a>
+            
+        </div>
+
         {% endfor %}
     </main>
 </div>

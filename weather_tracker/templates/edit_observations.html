@@ -3,55 +3,40 @@
 {% block title %}Edit Weather Report{% endblock %}
 
 {% block content %}
-<div>
-    <h1>Report {{ (report id) }}</h1>
+<div class="card">
+    <main class="card-body">
+        <form method="POST">
+            <label>City</label>
+            <input type="text" name="city" value="{{ report.city }}" class="form-control">
 
-    <!-- Edit Form -->
-    <form method="POST">
-        <div>
-            <label for="temp">Temperature *</label>
-            <input type="text" name="title" 
-                   value="{{}}" 
-                   required maxlength="100"
-                   placeholder="Enter new temperature">
-            {% if errors and 'temp' in errors %}
-                <div>{{ errors.temp }}</div>
-            {% endif %}
-        </div>
+            <label>Country</label>
+            <input type="text" name="country" value="{{ report.country }}" class="form-control">
 
-        <div>
-            <label for="windspeed">Windspeed *</label>
-            <input type="text" name="title" 
-                   value="{{}}" 
-                   required maxlength="100"
-                   placeholder="Enter new windspeed">
-            {% if errors and 'windspeed' in errors %}
-                <div>{{ errors.windspeed }}</div>
-            {% endif %}
-        </div>
+            <label>Latitude</label>
+            <input type="text" name="latitude" value="{{ report.latitude }}" class="form-control">
 
-        <div>
-            <label for="observation_time">Observation Time *</label>
-            <input type="text" name="title" 
-                   value="{{}}" 
-                   required maxlength="100"
-                   placeholder="Enter new time observed">
-            {% if errors and 'observation_time' in errors %}
-                <div>{{ errors.observation_time }}</div>
-            {% endif %}
-        </div>
-        
-        
-        
-        <div>
-            <button type="submit" class="btn btn-primary">
-                💾 Update Weather Report
-            </button>
-            <a href="{{ url_for('show_report', report_id=report.id) }}" class="btn btn-secondary">
-                ← Cancel
-            </a>
-        </div>
-    </form>
+            <label>Longitude</label>
+            <input type="text" name="longitude" value="{{ report.longitude }}" class="form-control">
+
+            <label>Temperature</label>
+            <input type="text" name="temp" value="{{ report.temp }}" class="form-control">
+
+            <label>Elevation</label>
+            <input type="text" name="elevation" value="{{ report.elevation }}" class="form-control">
+
+            <label>Windspeed</label>
+            <input type="text" name="windspeed" value="{{ report.windspeed }}" class="form-control">
+
+            <label>Observation Iime</label>
+            <input type="text" name="observation_time" value="{{ report.observation_time }}" class="form-control">
+
+            <label>Created At</label>
+            <input type="text" name="created_at" value="{{ report.created_at }}" class="form-control">
+
+            <button type="submit" class="btn btn-primary mt-3"> Update Report </button>
+        </form>
+
+    </main>
 </div>
 
 {% endblock %}

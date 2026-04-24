@@ -1,7 +1,7 @@
 import requests
 import response as r
 import patterns as d
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from datetime import datetime
 
 
@@ -48,43 +48,51 @@ def home():
         )
 
         new_record.save()
-        return render_template('observations.html', report=report, new_record=new_record)
+        return redirect(url_for('show_reports'))
 
 
     return render_template('dashboard.html')
 
 
 #Fetches live weather, saves it, returns record
-@app.route('/observations', methods = ['GET', 'POST'])
-def show_reports():
-    reports = d.Report.all()
-    print(reports)
-    return render_template('observations.html')
-
-
-"""
-#Retrieves all stored observations
 @app.route('/observations', methods = ['GET'])
-def retrieve_report():
-    return render_template()
+def show_reports():
+    reports = d.Report.all(d.db)
+    print(reports)
+    return render_template('observations.html', reports=reports)
+
 
 #Retrieves a specific obervation by ID
-@app.route('/observations/<int:id>', methods = ['GET'])
-def update_report(id):
-    return render_template()
+@app.route('/edit_observations/<int:id>', methods = ['GET'])
+def edit_report(id):
+    report = d.Report.find(d.db, id)
+    return render_template('edit_observations.html', report=report)
 
-#Updates a previously made observation
-@app.route('/observations/<int:id>', methods = ['PUT'])
+@app.route('/edit_observations/<int:id>', methods=["POST"])
 def update_report(id):
-    return render_template()
+    report = d.Report.find(d.db, id)
+    report.city = request.form['city']
+    report.country = request.form['country']
+    report.latitude = request.form['latitude']
+    report.longitude = request.form['longitude']
+    report.temp = request.form['temp']
+    report.elevation = request.form['elevation']
+    report.windspeed = request.form['windspeed']
+    report.observation_time = request.form['observation_time']
+    report.created_at = request.form ['created_at']
 
-#Deletes an observation from the Database
-@app.route('/observations/<int:id>', methods = ['DELETE'])
-def update_report(id):
-    return render_template()
+    report._update()
 
+    return redirect(url_for('show_reports'))
 
 """
+#Deletes an observation from the Database
+@app.route('/observations/<int:id>', methods = ['DELETE'])
+def update_report():
+    return render_template()
+"""
+
+
 
 # This ensures the server only runs if the script is executed directly - returns TypeError.
 if __name__ == '__main__':
