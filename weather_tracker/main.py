@@ -33,7 +33,10 @@ def home():
         report = r.report_form(geo_data, meteo_data)
         # ^ properly retireves full weather report object
 
-        
+
+        #checks for duplicates before submitting
+        if d.Report.find_duplicate(d.db, report.city, report.country):
+            return redirect(url_for('show_reports'))
 
         new_record = d.Report(
             db_manager=d.db,

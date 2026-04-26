@@ -131,7 +131,8 @@ class Report(BaseModel):
                                   latitude=result[3],
                                   longitude=result[4],
                                   temp=result[5],
-                                  elevation=result[7],
+                                  elevation=result[6],
+                                  windspeed=result[7],
                                   observation_time=result[8],
                                   created_at=result[9])
                 return None
@@ -164,24 +165,19 @@ class Report(BaseModel):
                 return reports
     
     @classmethod
-    def find_duplicate(cls, db_manager, city, country, observation_time):
+    def find_duplicate(cls, db_manager, city, country):
         """Checks for duplicates in the database before submitting POST method"""
         with db_manager.get_connection() as conn:
             with conn.cursor() as cur:
                 query = f"""
                     SELECT * FROM {cls.TABLE_NAME}
-                    WHERE city %s AND country = %s
+                    WHERE city = %s AND country = %s
+                    LIMIT 1
                 """
-                cur.execute(query)
-                row = cur.fetch_one(query, (city, country, observation_time))
+                cur.execute(query, (city, country))
+                return cur.fetchone() is not None
 
-                if row:
-                    return cls.from_row(db, row)
-                return None
-
-
-            
-            
+   
     def __repr__(self):
         return f"<Report(id={self.id}, city='{self.city}', country='{self.country}', temperature='{self.temp}', windspeed='{self.windspeed}')"
     

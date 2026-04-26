@@ -30,6 +30,9 @@ python main.py
 cd weather_tracker
 ```
 
-3. Run application in web browser:
+3. Run main.py:
+```
+python main.py
+```
 
-    'Go Live'
+4. Open https link in terminal, then explore on the web page!
