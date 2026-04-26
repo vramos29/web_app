@@ -162,6 +162,25 @@ class Report(BaseModel):
                                   observation_time=row[8],
                                   created_at=row[9]))
                 return reports
+    
+    @classmethod
+    def find_duplicate(cls, db_manager, city, country, observation_time):
+        """Checks for duplicates in the database before submitting POST method"""
+        with db_manager.get_connection() as conn:
+            with conn.cursor() as cur:
+                query = f"""
+                    SELECT * FROM {cls.TABLE_NAME}
+                    WHERE city %s AND country = %s
+                """
+                cur.execute(query)
+                row = cur.fetch_one(query, (city, country, observation_time))
+
+                if row:
+                    return cls.from_row(db, row)
+                return None
+
+
+            
             
     def __repr__(self):
         return f"<Report(id={self.id}, city='{self.city}', country='{self.country}', temperature='{self.temp}', windspeed='{self.windspeed}')"
